@@ -1,6 +1,3 @@
-import pymysql
-pymysql.install_as_MySQLdb()
-
 """
 
 Django settings for saros_project project.
@@ -28,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-ihj-r1oz%m#z40nj0!u#-k)q42c-!&7&ahk+u2!rx^0npyretl')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() == 'False'
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
@@ -90,15 +87,15 @@ WSGI_APPLICATION = 'saros_project.wsgi.application'
 # Database configuration - use environment variables in production
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.mysql'),
+        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
         'NAME': os.environ.get('DB_NAME', 'django_achu'),
-        'USER': os.environ.get('DB_USER', 'root'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '3306'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
         'OPTIONS': {
             'charset': 'utf8mb4',
-        } if os.environ.get('DB_ENGINE', 'django.db.backends.mysql') == 'django.db.backends.mysql' else {},
+        } if os.environ.get('DB_ENGINE', 'django.db.backends.postgresql') == 'django.db.backends.mysql' else {},
     }
 }
 

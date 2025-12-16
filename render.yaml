@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: shopkart
+    env: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn saros_project.wsgi --bind 0.0.0.0:$PORT --workers 3 --timeout 120
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_DEBUG
+        value: False
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false
+      - key: DB_ENGINE
+        value: django.db.backends.postgresql
+      - key: DB_PORT
+        value: 5432
+
+

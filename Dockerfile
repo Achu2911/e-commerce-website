@@ -1,33 +1,39 @@
-# Use Python 3.13 slim image
-FROM python:3.13-slim
+# 1. Base Image - Use a stable, slim version for smaller size
+FROM python:3.12-slim
 
-# Set working directory
-WORKDIR /app
-
-# Set environment variables
+# 2. Set Environment Variables for Python optimization
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies
+# 3. Set Working Directory
+WORKDIR /app
+
+# 4. Install System Dependencies required for psycopg2 compilation and running
+# postgresql-client is included for debugging/migrations, which is good.
 RUN apt-get update && apt-get install -y \
     gcc \
     postgresql-client \
     libpq-dev \
+    python3-dev \
+    # Clean up apt caches to keep the image size small
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python dependencies
+# 5. Install Python Dependencies
+# Copy requirements.txt first to leverage Docker's build cache
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Copy project
+# 6. Copy Application Code
+# Copy everything else now
 COPY . .
 
-# Collect static files (skip if it fails - will run at runtime)
+# 7. Collect Static Files (Assuming a Django App)
+# Note: Using '|| true' is a good defensive step for collectstatic in a Dockerfile.
 RUN python manage.py collectstatic --noinput || true
 
-# Expose port
+# 8. Expose Port
 EXPOSE 8000
 
-# Run gunicorn
+# 9. Define the Startup Command (using gunicorn)
 CMD ["gunicorn", "saros_project.wsgi", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "120"]
-

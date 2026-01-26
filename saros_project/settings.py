@@ -5,6 +5,7 @@ import dj_database_url
 
 
 
+
 """
 
 Django settings for saros_project project.
@@ -37,10 +38,8 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.environ.get(
-    "DJANGO_ALLOWED_HOSTS",
-    "localhost,127.0.0.1,.onrender.com"
-).split(",")
+ALLOWED_HOSTS = ["*"]
+
 
 # Application definition
 
@@ -80,7 +79,7 @@ SITE_NAME = 'ShopKart'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,8 +87,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.static',
-                'django.template.context_processors.media',
                 'shop.context_processors.cart_context',
             ],
         },
@@ -97,18 +94,19 @@ TEMPLATES = [
 ]
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # Database configuration - use environment variables in production
+
+
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True,
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
     )
 }
-
 
 
 LOGIN_URL = '/accounts/login/'
@@ -140,7 +138,6 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # ===============================

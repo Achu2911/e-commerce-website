@@ -1,0 +1,11 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <h2 class="text-success">Order Placed Successfully 🌿</h2>
+    <p>Your order ID: <strong>#{{ order.id }}</strong></p>
+    <a href="{% url 'shop:home' %}" class="btn btn-success mt-3">
+        Continue Shopping
+    </a>
+</div>
+{% endblock %}

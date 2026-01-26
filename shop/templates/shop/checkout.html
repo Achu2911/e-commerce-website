@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<h2>Checkout</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <input name="first_name" class="form-control" placeholder="First name">
+        </div>
+        <div class="col-md-6 mb-3">
+            <input name="last_name" class="form-control" placeholder="Last name">
+        </div>
+    </div>
+
+    <input name="email" class="form-control mb-3" placeholder="Email">
+    <input name="phone" class="form-control mb-3" placeholder="Phone">
+    <textarea name="address" class="form-control mb-3" placeholder="Address"></textarea>
+
+    <button class="btn btn-success">Place Order</button>
+</form>
+{% endblock %}

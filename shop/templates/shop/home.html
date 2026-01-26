@@ -1,0 +1,27 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Featured Products</h2>
+
+<div class="row g-4">
+    {% for product in featured_products %}
+        <div class="col-md-3">
+            <div class="card h-100">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top">
+                {% endif %}
+                <div class="card-body">
+                    <h6>{{ product.name }}</h6>
+                    <p>₹{{ product.price }}</p>
+                    <a href="{% url 'shop:product_detail' product.slug %}"
+                       class="btn btn-sm btn-success">
+                        View
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No products available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

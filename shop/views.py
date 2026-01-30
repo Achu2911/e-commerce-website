@@ -15,7 +15,7 @@ from .models import Category, SubCategory, Product, Cart, CartItem, Order, Order
 # 🏠 Home page
 def home(request):
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
+    products = Product.objects.all() if Product.objects.exists() else []
 
     return render(request, 'shop/index.html', {
         'categories': categories,
